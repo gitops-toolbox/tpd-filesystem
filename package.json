@@ -1,0 +1,24 @@
+{
+  "name": "@gitops-toolbox/tpd-filesystem",
+  "version": "0.0.1",
+  "description": "\"Persist templator output to filesystem\"",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "tap"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gitops-toolbox/tpd-filesystem.git"
+  },
+  "keywords": [
+    "templator",
+    "destination",
+    "filesystem"
+  ],
+  "author": "Luca Lanziani",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gitops-toolbox/tpd-filesystem/issues"
+  },
+  "homepage": "https://github.com/gitops-toolbox/tpd-filesystem#readme"
+}
