@@ -1,0 +1,20 @@
+[
+  {
+    "template": null,
+    "destination": {
+      "params": {
+        "baseDir": ".",
+        "filepath": "file1.txt"
+      }
+    }
+  },
+  {
+    "template": null,
+    "destination": {
+      "params": {
+        "baseDir": ".",
+        "filepath": "existingDir/text.txt"
+      }
+    }
+  }
+]

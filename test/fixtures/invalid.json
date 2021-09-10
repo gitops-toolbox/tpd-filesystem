@@ -1,0 +1,106 @@
+[
+  {
+    "template": null,
+    "contextSelector": "components.application",
+    "tags": { "type": "application" },
+    "renderedTemplate": "result",
+    "noDestination": {
+      "type": "tpd-filesystem",
+      "params": {
+        "baseDir": "../",
+        "filepath": "folder/application.json"
+      }
+    }
+  },
+  {
+    "template": null,
+    "contextSelector": "components.application",
+    "tags": { "type": "application" },
+    "renderedTemplate": "result",
+    "destination": {
+      "noType": "tpd-filesystem",
+      "params": {
+        "baseDir": "../",
+        "filepath": "folder/application.json"
+      }
+    }
+  },
+  {
+    "template": null,
+    "contextSelector": "components.application",
+    "tags": { "type": "application" },
+    "renderedTemplate": "result",
+    "destination": {
+      "type": "not-tpd-filesystem",
+      "params": {
+        "baseDir": "../",
+        "filepath": "folder/application.json"
+      }
+    }
+  },
+  {
+    "template": null,
+    "contextSelector": "components.application",
+    "tags": { "type": "application" },
+    "renderedTemplate": "result",
+    "destination": {
+      "type": "tpd-filesystem",
+      "noParams": {
+        "baseDir": "../",
+        "filepath": "folder/application.json"
+      }
+    }
+  },
+  {
+    "template": null,
+    "contextSelector": "components.application",
+    "tags": { "type": "application" },
+    "renderedTemplate": "result",
+    "destination": {
+      "type": "tpd-filesystem",
+      "params": {
+        "noBaseDir": "../",
+        "filepath": "folder/application.json"
+      }
+    }
+  },
+  {
+    "template": null,
+    "contextSelector": "components.application",
+    "tags": { "type": "application" },
+    "renderedTemplate": "result",
+    "destination": {
+      "type": "tpd-filesystem",
+      "params": {
+        "baseDir": "../",
+        "noFilepath": "folder/application.json"
+      }
+    }
+  },
+  {
+    "noTemplate": null,
+    "contextSelector": "components.application",
+    "tags": { "type": "application" },
+    "renderedTemplate": "result",
+    "destination": {
+      "type": "tpd-filesystem",
+      "params": {
+        "baseDir": "../",
+        "filepath": "folder/application.json"
+      }
+    }
+  },
+  {
+    "template": null,
+    "contextSelector": "components.application",
+    "tags": { "type": "application" },
+    "renderedTemplate": "result",
+    "destination": {
+      "type": "tpd-filesystem",
+      "params": {
+        "baseDir": "../",
+        "filepath": "folder/application.json"
+      }
+    }
+  }
+]

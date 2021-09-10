@@ -1,0 +1,22 @@
+[
+  {
+    "template": "test.txt",
+    "destination": {
+      "params": {
+        "baseDir": "./nonExistent",
+        "filepath": "file1.txt"
+      }
+    },
+    "renderedTemplate": "test"
+  },
+  {
+    "template": "test.txt",
+    "destination": {
+      "params": {
+        "baseDir": ".",
+        "filepath": "existingDir/text.txt"
+      }
+    },
+    "renderedTemplate": "test"
+  }
+]
