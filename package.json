@@ -31,5 +31,8 @@
   },
   "tap": {
     "check-coverage": false
+  },
+  "engines": {
+    "node": ">=14"
   }
 }
