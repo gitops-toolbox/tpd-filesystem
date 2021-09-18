@@ -2,6 +2,7 @@
   {
     "template": "test.txt",
     "destination": {
+      "type": "tpd-filesystem",
       "params": {
         "baseDir": "./nonExistent",
         "filepath": "file1.txt"
@@ -12,9 +13,21 @@
   {
     "template": "test.txt",
     "destination": {
+      "type": "tpd-filesystem",
       "params": {
         "baseDir": ".",
         "filepath": "existingDir/text.txt"
+      }
+    },
+    "renderedTemplate": "test"
+  },
+  {
+    "template": "test.txt",
+    "destination": {
+      "type": "tpd-filesystem",
+      "params": {
+        "baseDir": ".",
+        "filepath": "deep/folder/multiple/levels/text.txt"
       }
     },
     "renderedTemplate": "test"

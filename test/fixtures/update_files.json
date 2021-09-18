@@ -2,6 +2,7 @@
   {
     "template": "test.txt",
     "destination": {
+      "type": "tpd-filesystem",
       "params": {
         "baseDir": ".",
         "filepath": "existingDir/text.txt"
@@ -12,6 +13,7 @@
   {
     "template": "test.txt",
     "destination": {
+      "type": "tpd-filesystem",
       "params": {
         "baseDir": ".",
         "filepath": "existingDir"
