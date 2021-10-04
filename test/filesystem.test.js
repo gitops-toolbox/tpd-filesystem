@@ -1,51 +1,56 @@
 const tap = require('tap');
 const fs = require('fs');
+const os = require('os');
+const sinon = require('sinon');
 const path = require('path');
 const debug = require('debug')('tpd-filesystem');
-const { TpdFilesystem } = require('../lib');
+const promptsStub = sinon.stub();
+const { TpdFilesystem } = tap.mock('../lib', {
+  prompts: async (values) => {
+    promptsStub(values);
+  },
+});
 const valid_config = require('./fixtures/valid.json');
 
-const destination_path = './test/fixtures/destination';
 const logger = debug;
-const args = {
-  baseDir: destination_path,
-  interactive: false,
-};
 
-tap.test('When instatiating a new TpdFilesystem object', (t) => {
-  t.plan(5);
+tap.test('When instantiating a new TpdFilesystem object', (t) => {
+  t.plan(6);
 
   t.beforeEach((t) => {
     t.context.original_log = console.log;
     console.log = debug;
-    fs.mkdirSync(destination_path);
+    t.context.args = {
+      baseDir: fs.mkdtempSync(path.join(os.tmpdir(), 'tpd-filesystem-')),
+      interactive: false,
+    };
   });
 
   t.afterEach((t) => {
     console.log = t.context.original_log;
-    fs.rmSync(destination_path, { recursive: true, force: true });
+    fs.rmSync(t.context.args.baseDir, { recursive: true, force: true });
   });
 
   t.test('give a valid input should return an empty list', (t) => {
     t.plan(1);
     t.equal(
-      new TpdFilesystem(valid_config, logger, args).filterInvalid().length,
+      new TpdFilesystem(valid_config, logger, t.context.args).filterInvalid()
+        .length,
       0
     );
   });
 
   t.test(
     'given an invalid input should return the invalid config in a list',
-    (t) => {
+    async (t) => {
       t.plan(1);
-      t.equal(
-        new TpdFilesystem(
-          require('./fixtures/invalid.json'),
-          logger,
-          args
-        ).filterInvalid().length,
-        7
-      );
+      const fixture = require('./fixtures/invalid.json');
+      const result = await new TpdFilesystem(
+        fixture,
+        logger,
+        t.context.args
+      ).persist();
+      t.equal(result.invalidTemplates.length, 7);
     }
   );
 
@@ -54,31 +59,41 @@ tap.test('When instatiating a new TpdFilesystem object', (t) => {
     await new TpdFilesystem(
       require('./fixtures/create_files.json'),
       logger,
-      args
+      t.context.args
     ).persist();
-    t.notOk(fs.existsSync(path.join(destination_path, 'nonExistent')));
-    t.ok(fs.existsSync(path.join(destination_path, 'existingDir/text.txt')));
+    t.notOk(fs.existsSync(path.join(t.context.args.baseDir, 'nonExistent')));
+    t.ok(
+      fs.existsSync(path.join(t.context.args.baseDir, 'existingDir/text.txt'))
+    );
     t.ok(
       fs.existsSync(
-        path.join(destination_path, 'deep/folder/multiple/levels/text.txt')
+        path.join(
+          t.context.args.baseDir,
+          'deep/folder/multiple/levels/text.txt'
+        )
       )
     );
   });
+
+  // t.test('Will esclude invalid templates when persisting', async (t) => {});
 
   t.test('Will delete files if the file exist', async (t) => {
     t.plan(1);
     await new TpdFilesystem(
       require('./fixtures/create_files.json'),
       logger,
-      args
+      t.context.args
     ).persist();
-    console.log('==================');
     await new TpdFilesystem(
       require('./fixtures/delete_files.json'),
       logger,
-      args
+      t.context.args
     ).persist();
-    t.notOk(fs.existsSync('./test/fixtures/destination/existingDir/text.txt'));
+    t.notOk(
+      fs.existsSync(
+        path.resolve(t.context.args.baseDir, '/existingDir/text.txt')
+      )
+    );
   });
 
   t.test('Will update file if the file exist', async (t) => {
@@ -86,18 +101,40 @@ tap.test('When instatiating a new TpdFilesystem object', (t) => {
     await new TpdFilesystem(
       require('./fixtures/create_files.json'),
       logger,
-      args
+      t.context.args
     ).persist();
     await new TpdFilesystem(
       require('./fixtures/update_files.json'),
       logger,
-      args
+      t.context.args
     ).persist();
-    t.ok(fs.existsSync(path.join(destination_path, 'existingDir/text.txt')));
+    t.ok(
+      fs.existsSync(path.join(t.context.args.baseDir, 'existingDir/text.txt'))
+    );
     t.equal(
       'test123',
-      fs.readFileSync(path.join(destination_path, 'existingDir/text.txt'), {
-        encoding: 'utf8',
+      fs.readFileSync(
+        path.join(t.context.args.baseDir, 'existingDir/text.txt'),
+        {
+          encoding: 'utf8',
+        }
+      )
+    );
+  });
+
+  t.test('Will prompt if interactive is true', async (t) => {
+    t.plan(1);
+
+    await new TpdFilesystem(require('./fixtures/create_files.json'), logger, {
+      ...t.context.args,
+      interactive: true,
+    }).persist();
+
+    t.ok(
+      promptsStub.calledWith({
+        type: 'text',
+        name: 'continue',
+        message: 'Press any key to continue, CRTL^C to stop',
       })
     );
   });

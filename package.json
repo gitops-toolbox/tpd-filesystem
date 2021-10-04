@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/gitops-toolbox/tpd-filesystem#readme",
   "devDependencies": {
+    "sinon": "^11.1.2",
     "tap": "^15.0.9"
   },
   "dependencies": {
