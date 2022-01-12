@@ -15,7 +15,7 @@ const valid_config = require('./fixtures/valid.json');
 const logger = debug;
 
 tap.test('When instantiating a new TpdFilesystem object', (t) => {
-  t.plan(6);
+  t.plan(7);
 
   t.beforeEach((t) => {
     t.context.original_log = console.log;
@@ -51,6 +51,25 @@ tap.test('When instantiating a new TpdFilesystem object', (t) => {
         t.context.args
       ).persist();
       t.equal(result.invalidTemplates.length, 7);
+    }
+  );
+
+  t.test(
+    'should be invalid only when renderedTemplate is null or undefined',
+    async (t) => {
+      t.plan(3);
+      const fixtures = require('./fixtures/valid.json');
+      const fixture = Object.assign({}, fixtures[0], { template: 'notNull' });
+      const tpdFilesystem = new TpdFilesystem([], logger, t.context.args);
+      const emptyString = Object.assign({}, fixture, { renderedTemplate: '' });
+      const isNull = Object.assign({}, fixture, { renderedTemplate: null });
+      const isUndefined = Object.assign({}, fixture, {
+        renderedTemplate: undefined,
+      });
+
+      t.equal(tpdFilesystem.isValid(emptyString), true);
+      t.equal(tpdFilesystem.isValid(isNull), false);
+      t.equal(tpdFilesystem.isValid(isUndefined), false);
     }
   );
 
